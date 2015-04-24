@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2015 by trixartem (http://jsbin.com/risesu/16/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+.box {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #eee;
+  display: inline-block;
+  margin: 10px;
+  background: #fff;
+  box-shadow: 1px 1px 0px 0px rgba(0,0,0,.3);
+}
+.box:after
+{
+  content: 'q';
+}
+
+.color .box {
+  background: #faf;
+}
+</style>
+</head>
+<body>
+  <button type=button onClick='change()'>Change tyle</button>
+    <table class='table'></table>
+<div class="container"></div>
+<script id="jsbin-javascript">
+
+function createBoxes () {
+var container = document.querySelector('.container');
+var count = 10000;
+  console.time(count);
+for (var i = 0; i<count; i++) {
+var box = document.createElement('div');
+box.classList.add('box');
+  if (i === count - 1) {
+    box.classList.add('box__last');
+  }
+  if (i === count / 2) {
+    box.classList.add('box__middle');
+  }
+  box.innerHTML = '<div class="box__inner"><div class=title id="box'+i+'">box ' + i + '</div></div>'; 
+    container.appendChild(box);  
+  }
+    console.timeEnd(count);
+}
+createBoxes();
+
+var selectors = [
+  '.container > .box__last > .box__inner > .title',
+  '.box__middle > .box__inner > .title',
+  '#box5001',
+  '* div',
+  '.box__last .title',
+  'div:last-child',
+  'div:nth-last-child(-n+1) .title',
+  '.box__middle div  h3',
+  '.box.box__last:after',
+  'div div div.box.box__last div  h3',
+  'div.box:not(:empty):last-of-type .title'
+];
+var table = document.querySelector('table');
+var row = '';
+
+selectors.forEach(function (s) {
+  
+  var g = Date.now();
+  console.time(s);
+  var el = document.querySelectorAll(s);
+  console.timeEnd(s);
+  
+  row += '<tr><td>' + s + '</td><td>' + (Date.now() - g) + '</td></tr>';
+});
+
+  table.innerHTML = row;
+
+
+var change = function () {
+var cont = document.querySelector('.container');
+console.time('styles');
+cont.classList.add('color');
+console.timeEnd('styles');
+};
+</script>
+</body>
+</html>
